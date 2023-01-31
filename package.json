@@ -1,7 +1,7 @@
 {
-  "name": "react-map-gl",
+  "name": "@maply/react-map-gl",
   "description": "React components for Mapbox GL JS-compatible libraries",
-  "version": "6.1.21",
+  "version": "6.1.20",
   "keywords": [
     "mapbox",
     "mapbox-gl",
@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/visgl/react-map-gl.git"
+    "url": "https://github.com/maply-tech/react-map-gl.git"
   },
   "license": "MIT",
   "types": "src/index.d.ts",
@@ -43,7 +43,8 @@
     "test": "tsc && ocular-test",
     "test-fast": "tsc && ocular-test node",
     "metrics": "ocular-metrics",
-    "update-release-branch": "scripts/update-release-branch.sh"
+    "update-release-branch": "scripts/update-release-branch.sh",
+    "artifactregistry-login": "npx google-artifactregistry-auth"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0",

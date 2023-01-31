@@ -17,11 +17,11 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import {useContext, useEffect, useMemo, useState, useRef} from 'react';
 import * as PropTypes from 'prop-types';
-import MapContext from './map-context';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import assert from '../utils/assert';
 import deepEqual from '../utils/deep-equal';
+import MapContext from './map-context';
 
 const LAYER_TYPES = [
   'fill',
@@ -90,7 +90,7 @@ function diffLayerStyles(map, id, props, prevProps) {
 }
 
 function createLayer(map, id, props) {
-  if (map.style && map.style._loaded) {
+  if (map.style && map.style._loaded && (!('source' in props) || map.getSource(props.source))) {
     const options = {...props, id};
     delete options.beforeId;
 
@@ -127,7 +127,7 @@ function Layer(props) {
 
       return () => {
         map.off('styledata', forceUpdate);
-        if (map.style && map.style._loaded) {
+        if (map.style && map.style._loaded && map.getLayer(id)) {
           map.removeLayer(id);
         }
       };
