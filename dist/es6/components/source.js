@@ -1,10 +1,9 @@
-import * as React from 'react';
-import { useContext, useEffect, useMemo, useState, useRef } from 'react';
-import { cloneElement } from 'react';
 import * as PropTypes from 'prop-types';
-import MapContext from './map-context';
+import * as React from 'react';
+import { cloneElement, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import assert from '../utils/assert';
 import deepEqual from '../utils/deep-equal';
+import MapContext from './map-context';
 const propTypes = {
   type: PropTypes.string.isRequired,
   id: PropTypes.string
@@ -91,6 +90,18 @@ function Source(props) {
         map.off('styledata', forceUpdate);
         requestAnimationFrame(() => {
           if (map.style && map.style._loaded && map.getSource(id)) {
+            var _map$getStyle;
+
+            const allLayers = (_map$getStyle = map.getStyle()) === null || _map$getStyle === void 0 ? void 0 : _map$getStyle.layers;
+
+            if (allLayers) {
+              for (const layer of allLayers) {
+                if (layer.source === id) {
+                  map.removeLayer(layer.id);
+                }
+              }
+            }
+
             map.removeSource(id);
           }
         });

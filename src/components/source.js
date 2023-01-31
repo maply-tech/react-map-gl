@@ -17,13 +17,12 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import * as React from 'react';
-import {useContext, useEffect, useMemo, useState, useRef} from 'react';
-import {cloneElement} from 'react';
 import * as PropTypes from 'prop-types';
-import MapContext from './map-context';
+import * as React from 'react';
+import { cloneElement, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import assert from '../utils/assert';
 import deepEqual from '../utils/deep-equal';
+import MapContext from './map-context';
 
 const propTypes = {
   type: PropTypes.string.isRequired,
@@ -115,6 +114,18 @@ function Source(props) {
         // TODO - find a more robust solution
         requestAnimationFrame(() => {
           if (map.style && map.style._loaded && map.getSource(id)) {
+            // Parent effects are destroyed before child ones, see
+            // https://github.com/facebook/react/issues/16728
+            // Source can only be removed after all child layers are removed
+            const allLayers = map.getStyle()?.layers;
+            if (allLayers) {
+              for (const layer of allLayers) {
+                // @ts-ignore (2339) source does not exist on all layer types
+                if (layer.source === id) {
+                  map.removeLayer(layer.id);
+                }
+              }
+            }
             map.removeSource(id);
           }
         });
