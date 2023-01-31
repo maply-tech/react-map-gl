@@ -117,12 +117,13 @@ function Source(props) {
             // Parent effects are destroyed before child ones, see
             // https://github.com/facebook/react/issues/16728
             // Source can only be removed after all child layers are removed
-            const allLayers = map.getStyle()?.layers;
+            // const allLayers = map.getStyle()?.layers;
+            const allLayers = Object.keys(map.style._layers);
             if (allLayers) {
-              for (const layer of allLayers) {
+              for (const layerId of allLayers) {
                 // @ts-ignore (2339) source does not exist on all layer types
-                if (layer.source === id) {
-                  map.removeLayer(layer.id);
+                if (layerId === id) {
+                  map.removeLayer(layerId);
                 }
               }
             }

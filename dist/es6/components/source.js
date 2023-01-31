@@ -90,14 +90,12 @@ function Source(props) {
         map.off('styledata', forceUpdate);
         requestAnimationFrame(() => {
           if (map.style && map.style._loaded && map.getSource(id)) {
-            var _map$getStyle;
-
-            const allLayers = (_map$getStyle = map.getStyle()) === null || _map$getStyle === void 0 ? void 0 : _map$getStyle.layers;
+            const allLayers = Object.keys(map.style._layers);
 
             if (allLayers) {
-              for (const layer of allLayers) {
-                if (layer.source === id) {
-                  map.removeLayer(layer.id);
+              for (const layerId of allLayers) {
+                if (layerId === id) {
+                  map.removeLayer(layerId);
                 }
               }
             }

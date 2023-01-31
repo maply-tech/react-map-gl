@@ -125,9 +125,7 @@ function Source(props) {
         map.off('styledata', forceUpdate);
         requestAnimationFrame(function () {
           if (map.style && map.style._loaded && map.getSource(id)) {
-            var _map$getStyle;
-
-            var allLayers = (_map$getStyle = map.getStyle()) === null || _map$getStyle === void 0 ? void 0 : _map$getStyle.layers;
+            var allLayers = Object.keys(map.style._layers);
 
             if (allLayers) {
               var _iterator = _createForOfIteratorHelper(allLayers),
@@ -135,10 +133,10 @@ function Source(props) {
 
               try {
                 for (_iterator.s(); !(_step = _iterator.n()).done;) {
-                  var layer = _step.value;
+                  var layerId = _step.value;
 
-                  if (layer.source === id) {
-                    map.removeLayer(layer.id);
+                  if (layerId === id) {
+                    map.removeLayer(layerId);
                   }
                 }
               } catch (err) {
